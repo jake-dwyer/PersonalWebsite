@@ -1,0 +1,9 @@
+@font-face {
+    font-family: GeistSans;
+    src: url(../public/fonts/Geist-Medium.ttf);
+}
+
+@font-face {
+    font-family: IbmPlexMono;
+    src: url(../public/fonts/ibmPlexMono.otf);
+}

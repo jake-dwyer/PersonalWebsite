@@ -1,0 +1,84 @@
+@import url(/src/Fonts.css);
+@import url(/src/Colors.css);
+
+* {
+  background-color: var(--background);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+  padding: 20px 40px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.primaryText {
+  font-family: GeistSans;
+  color: var(--primaryText);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.secondaryText {
+  font-family: IbmPlexMono;
+  color: var(--secondaryText);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.secondaryText, .primaryText {
+  display: block; 
+}
+
+.topLeftNav ul, .topRightNav ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.topLeftNav, .navItems, .topRightNav {
+  display: flex;
+  align-items: center;
+}
+
+.navItems ul {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 0;
+}
+
+.navItems li {
+  margin-right: 100px;
+}
+
+li.primaryText {
+  margin-top: 8px; 
+}
+
+.topRightNav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; 
+}
+
+.topRightNav ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+  padding: 0;
+}
+
+
+
+

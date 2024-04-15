@@ -1,0 +1,50 @@
+@import url(/src/Fonts.css);
+@import url(/src/Colors.css);
+@import url(/src/Nav.css);
+@import url(/src/Content.css);
+
+.projectContent {
+    margin: auto;
+    width: 920px;
+    display: block;
+}
+
+h1 {
+    font-family: IbmPlexMono;
+    color: var(--secondaryText);
+    font-size: 14px;
+    font-weight: 400;
+    display: block;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    grid-gap: 40px;
+}
+
+.card {
+    margin-top: 12px;
+    border: 1px solid var(--outlineStroke);
+    padding: 16px;
+}
+
+.cardContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    margin-top: 16px;
+}
+
+h2 {
+    font-family: GeistSans;
+    color: var(--primaryText);
+    font-size: 14px;
+    font-weight: 400;
+    display: block;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+

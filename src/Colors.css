@@ -1,0 +1,8 @@
+/* Dark Mode Theme */
+
+:root {
+    --background: #000;
+    --primaryText: #EDEDED;
+    --secondaryText: #A1A1A1;
+    --outlineStroke: #404040;
+}
