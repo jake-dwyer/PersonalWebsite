@@ -1,5 +1,5 @@
 @import url(/src/Fonts.css);
-@import url(/src/Colors.css);
+@import url(/src/Global.css);
 
 * {
   background-color: var(--background);
@@ -16,26 +16,6 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.primaryText {
-  font-family: GeistSans;
-  color: var(--primaryText);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-}
-
-.secondaryText {
-  font-family: IbmPlexMono;
-  color: var(--secondaryText);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-}
-
-.secondaryText, .primaryText {
-  display: block; 
 }
 
 .topLeftNav ul, .topRightNav ul {
@@ -78,6 +58,16 @@ li.primaryText {
   align-items: flex-end; 
   padding: 0;
 }
+
+a {
+  color: var(--secondaryText);
+  text-decoration: none;
+}
+
+.secondaryText a:hover {
+  color: var(--primaryText);
+}
+
 
 
 

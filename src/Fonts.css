@@ -7,3 +7,19 @@
     font-family: IbmPlexMono;
     src: url(../public/fonts/ibmPlexMono.otf);
 }
+
+.primaryText {
+    font-family: GeistSans;
+    color: var(--primaryText);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  
+  .secondaryText {
+    font-family: IbmPlexMono;
+    color: var(--secondaryText);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+  }

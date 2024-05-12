@@ -1,5 +1,5 @@
 import './Content.css';
-import './Colors.css';
+import './Global.css';
 import './Fonts.css';
 
 function Content() {
@@ -11,8 +11,8 @@ function Content() {
                 </h1>
                 <p className='primaryText'>
                     I’m a second year student at 
-                    Northeastern University studying computer science 
-                    and business administration.
+                    Northeastern University studying Computer Science 
+                    and Business Administration.
                 </p>
             </div>
             <div className='contentBlock'>
