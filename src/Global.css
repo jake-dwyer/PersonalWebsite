@@ -6,3 +6,11 @@
     --secondaryText: #A1A1A1;
     --outlineStroke: #404040;
 }
+
+html {
+    cursor: url('/public/images/figmaCursor.svg'), auto;
+}
+
+::selection {
+    background: #635bff;
+  }
