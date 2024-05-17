@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom/client';
 import Nav from './Nav';
 import Content from './Content';
 import Projects from './Projects';
+import Resume from './Resume';
 import reportWebVitals from './reportWebVitals';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

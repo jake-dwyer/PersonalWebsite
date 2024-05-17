@@ -1,8 +1,14 @@
+import React, { useState } from 'react';
 import './Nav.css';
 import './Global.css';
-import './Fonts.css'
+import './Fonts.css';
 
 function Nav() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <nav>
@@ -12,20 +18,20 @@ function Nav() {
           <li className='primaryText'>Jake Dwyer</li>
         </ul>
       </div>
-      <div className='navItems'>
+      <div className={`navItems ${isMenuOpen ? 'open' : ''}`}>
         <ul>
           <li className='secondaryText'>
             <a href="url">CONTACT ME</a>
-            </li>
+          </li>
           <li className='secondaryText'>
             <a href="https://www.linkedin.com/in/jakedwyer-/" target="_blank">LINKEDIN</a>
-            </li>
+          </li>
           <li className='secondaryText'>
             <a href="https://github.com/jake-dwyer" target="_blank">GITHUB</a>
-            </li>
+          </li>
           <li className='secondaryText'>
-            <a href="url">RESUME</a>
-            </li>
+            <a href="/Resume.pdf" target="_blank">RESUME</a>
+          </li>
         </ul>
       </div>
       <div className='topRightNav'>
@@ -34,11 +40,13 @@ function Nav() {
           <li className='primaryText'>Boston, MA</li>
         </ul>
       </div>
+      <div className='hamburger' onClick={toggleMenu}>
+        <div className='line'></div>
+        <div className='line'></div>
+        <div className='line'></div>
+      </div>
     </nav>
   );
 }
 
 export default Nav;
-
-
-

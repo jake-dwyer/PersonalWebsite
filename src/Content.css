@@ -2,24 +2,38 @@
 @import url(/src/Global.css);
 
 .pageContent {
-    margin: auto;
-    margin-top: 80px;
-    margin-bottom: 100px;
-    width: 440px;
-    display: block;
+  margin: auto;
+  margin-top: 80px;
+  margin-bottom: 100px;
+  width: 440px;
+  display: block;
 }
 
 .contentBlock {
-    margin-top: 60px;
-    display: block;
+  margin-top: 60px;
+  display: block;
 }
 
 p {
-    font-family: GeistSans;
-    color: var(--primaryText);
-    font-size: 16px;
-    line-height: 24px;
-    display: block;
-    margin-top: 12px;
-    font-weight: 400;
+  font-family: GeistSans;
+  color: var(--primaryText);
+  font-size: 16px;
+  line-height: 24px;
+  display: block;
+  margin-top: 12px;
+  font-weight: 400;
+}
+
+/* Media Queries for Page Content */
+@media (max-width: 768px) {
+  .pageContent {
+    width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  p {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
