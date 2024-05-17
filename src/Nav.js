@@ -10,6 +10,14 @@ function Nav() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  function copyEmail() {
+    const email = "dwyer.jak@northeastern.edu";
+
+    navigator.clipboard.writeText(email)
+    .then(() => alert("Copied the text: " + email))
+    .catch(err => console.error('Error copying email to clipboard: ', err));
+}
+
   return (
     <nav>
       <div className='topLeftNav'>
@@ -21,7 +29,7 @@ function Nav() {
       <div className={`navItems ${isMenuOpen ? 'open' : ''}`}>
         <ul>
           <li className='secondaryText'>
-            <a href="url">CONTACT ME</a>
+            <a href="Contact" onClick={copyEmail}>CONTACT ME</a>
           </li>
           <li className='secondaryText'>
             <a href="https://www.linkedin.com/in/jakedwyer-/" target="_blank">LINKEDIN</a>
