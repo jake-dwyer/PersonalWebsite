@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Nav.css';
 import './Global.css';
 import './Fonts.css';
+import Menu from './menu.svg';
 
 function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,9 +50,7 @@ function Nav() {
         </ul>
       </div>
       <div className='hamburger' onClick={toggleMenu}>
-        <div className='line'></div>
-        <div className='line'></div>
-        <div className='line'></div>
+      <img src={Menu} alt="Menu"/>
       </div>
     </nav>
   );

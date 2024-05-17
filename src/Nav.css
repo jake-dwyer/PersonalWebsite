@@ -77,12 +77,6 @@ a {
   cursor: pointer;
 }
 
-.hamburger .line {
-  width: 24px;
-  height: 3px;
-  background-color: var(--secondaryText);
-}
-
 @media (max-width: 1100px) {
   .hamburger {
     display: flex;
@@ -90,8 +84,8 @@ a {
 
   .navItems {
     position: absolute;
-    top: 60px;
-    right: 20px;
+    top: 44px;
+    right: 24px;
     background-color: var(--background);
     width: 160px;
     border: 1px solid var(--outlineStroke);
