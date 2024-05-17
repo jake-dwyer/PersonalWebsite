@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Nav from './Nav';
-import Content from './Content';
-import Projects from './Projects';
-import Resume from './Resume';
+import Nav from './components/Nav/Nav';
+import Content from './components/Content/Content';
+import Projects from './components/Projects/Projects';
+import Resume from './components/Nav/Resume';
 import reportWebVitals from './reportWebVitals';
 
 

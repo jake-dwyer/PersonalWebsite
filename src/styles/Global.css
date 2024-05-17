@@ -7,6 +7,17 @@
     --outlineStroke: #404040;
 }
 
+/* Light Mode Theme */
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #FAFAFA;
+        --primaryText: #171717;
+        --secondaryText: #666666;
+        --outlineStroke: rgba(0, 0, 0, 0.15);
+    }
+}
+
 html {
     cursor: url('/public/images/figmaCursor.svg'), auto;
 }
@@ -14,3 +25,5 @@ html {
 ::selection {
     background: #2937E8;
   }
+
+  

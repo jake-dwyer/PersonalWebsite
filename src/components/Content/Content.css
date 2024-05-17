@@ -1,5 +1,5 @@
-@import url(/src/Fonts.css);
-@import url(/src/Global.css);
+@import url(/src/styles/Fonts.css);
+@import url(/src/styles/Global.css);
 
 .pageContent {
   margin: auto;

@@ -1,6 +1,6 @@
 import './Content.css';
-import './Global.css';
-import './Fonts.css';
+import '../../styles/Global.css';
+import '../../styles/Fonts.css';
 
 function Content() {
     return (

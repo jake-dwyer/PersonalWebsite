@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './Nav.css';
-import './Global.css';
-import './Fonts.css';
-import Menu from './menu.svg';
+import '../../styles/Global.css';
+import '../../styles/Fonts.css';
 
 function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,7 +38,7 @@ function Nav() {
             <a href="https://github.com/jake-dwyer" target="_blank">GITHUB</a>
           </li>
           <li className='secondaryText'>
-            <a href="/Resume.pdf" target="_blank">RESUME</a>
+            <a href="../images/Resume.pdf" target="_blank">RESUME</a>
           </li>
         </ul>
       </div>
@@ -50,7 +49,9 @@ function Nav() {
         </ul>
       </div>
       <div className='hamburger' onClick={toggleMenu}>
-      <img src={Menu} alt="Menu"/>
+        <div className='line'></div>
+        <div className='line'></div>
+        <div className='line'></div>
       </div>
     </nav>
   );

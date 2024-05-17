@@ -1,10 +1,10 @@
 import './Projects.css';
-import './Global.css';
-import './Fonts.css';
-import SolanaCLI from './SolanaCLI.svg';
-import Hex from './hex.svg';
-import Dorms from './dorms.svg';
-import Arrow from './Arrows.svg';
+import '../../styles/Global.css';
+import '../../styles/Fonts.css';
+import SolanaCLI from '../../assets/SolanaCLI.svg';
+import Hex from '../../assets/hex.svg';
+import Dorms from '../../assets/dorms.svg';
+import Arrow from '../../assets/Arrows.svg';
 
 function Cards() {
     return (

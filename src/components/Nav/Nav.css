@@ -1,5 +1,5 @@
-@import url(/src/Fonts.css);
-@import url(/src/Global.css);
+@import url(/src/styles/Fonts.css);
+@import url(/src/styles/Global.css);
 
 * {
   background-color: var(--background);
@@ -73,8 +73,14 @@ a {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  height: 20px;
+  height: 16px;
   cursor: pointer;
+}
+
+.hamburger .line {
+  width: 24px;
+  height: 2px;
+  background-color: var(--secondaryText);
 }
 
 @media (max-width: 1100px) {
@@ -84,8 +90,8 @@ a {
 
   .navItems {
     position: absolute;
-    top: 44px;
-    right: 24px;
+    top: 40px;
+    right: 20px;
     background-color: var(--background);
     width: 160px;
     border: 1px solid var(--outlineStroke);
