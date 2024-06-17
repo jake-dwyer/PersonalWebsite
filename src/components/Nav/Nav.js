@@ -38,6 +38,9 @@ function Nav() {
             <a href="https://github.com/jake-dwyer" target="_blank">GITHUB</a>
           </li>
           <li className='secondaryText'>
+            <a href="https://leetcode.com/u/jakeistyping/" target="_blank">LEETCODE</a>
+          </li>
+          <li className='secondaryText'>
             <a href="../images/Resume.pdf" target="_blank">RESUME</a>
           </li>
         </ul>
