@@ -5,6 +5,8 @@ import Content from './components/Content/Content';
 import Projects from './components/Projects/Projects';
 import Resume from './components/Nav/Resume';
 import reportWebVitals from './reportWebVitals';
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,6 +15,8 @@ root.render(
     <Nav />
     <Content />
     <Projects />
+    <Analytics />
+    <SpeedInsights />
   </React.StrictMode>
 );
 
