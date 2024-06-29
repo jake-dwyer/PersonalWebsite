@@ -1,6 +1,8 @@
 import './Content.css';
 import '../../styles/Global.css';
 import '../../styles/Fonts.css';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from "@vercel/analytics/react"
 
 function Content() {
     return (
@@ -23,6 +25,8 @@ function Content() {
                 I enjoy creating software that users can be passionate about using and have a memorable experience with.
                 </p>
             </div>
+            <SpeedInsights />
+            <Analytics/>
         </div>
     );
 }
