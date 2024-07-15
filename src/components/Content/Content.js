@@ -12,9 +12,7 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-                    I’m a second year student at 
-                    Northeastern University studying Computer Science 
-                    and Business Administration.
+                I'm a third-year student at Northeastern University, studying Computer Science and Business Administration. Right now, I'm working on the NUgig platform with Northeastern's IoT Open Innovation Lab.
                 </p>
             </div>
             <div className='contentBlock'>
@@ -22,7 +20,7 @@ function Content() {
                     ABOUT ME
                 </h1>
                 <p className='primaryText'>
-                I enjoy creating software that users can be passionate about using and have a memorable experience with.
+                I enjoy creating software that users can be passionate about using.
                 </p>
             </div>
             <SpeedInsights />
