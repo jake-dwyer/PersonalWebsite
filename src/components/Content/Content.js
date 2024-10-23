@@ -12,7 +12,7 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-                    I'm a third-year student at Northeastern University, studying Computer Science and Business Administration. I'm on Co-op with Northeastern, working on <a href="https://nugig.tech/" target="_blank" rel="noopener noreferrer">nugig
+                    I'm a third-year student at Northeastern University, studying Computer Science and Business Administration. I'm on Co-op with Northeastern, working on <a class="inline-a" href="https://nugig.tech/" target="_blank" rel="noopener noreferrer">nugig
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                                 <g id="arrow.up.forward">
