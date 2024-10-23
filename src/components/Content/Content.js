@@ -12,7 +12,7 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-                I'm a third-year student at Northeastern University, studying Computer Science and Business Administration. Right now, I'm working on the NUgig platform with Northeastern's IoT Open Innovation Lab.
+                I'm a third-year student at Northeastern University, studying Computer Science and Business Administration. Currently - I'm on Co-op with Northeastern, working on nugig.
                 </p>
             </div>
             <div className='contentBlock'>
