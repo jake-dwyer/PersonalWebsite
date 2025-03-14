@@ -12,7 +12,7 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-                    I'm a third-year student at Northeastern University, studying Computer Science and Business Administration. I'm on Co-op with Northeastern, working on <a class="inline-a" href="https://nugig.tech/" target="_blank" rel="noopener noreferrer">nugig
+                    I'm a third-year student at Northeastern University studying Computer Science and Business Administration. I'm currently working part-time as a product engineer on<a class="inline-a" href="https://nugig.tech/" target="_blank" rel="noopener noreferrer">nugig 
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                                 <g id="arrow.up.forward">
@@ -22,7 +22,7 @@ function Content() {
                                 </g>
                             </g>
                         </svg>
-                    </a>.
+                    </a>, while actively seeking my next co-op opportunity. 
                 </p>
             </div>
             <div className='contentBlock'>
@@ -30,7 +30,7 @@ function Content() {
                     ABOUT ME
                 </h1>
                 <p className='primaryText'>
-                    I enjoy creating software that users can be passionate about using.
+                    I'm passionate about creating user-centered products at the intersection of technology and business, and I'm eager to continue exploring how innovative design and thoughtful engineering can solve real-world problems.
                 </p>
             </div>
             <SpeedInsights />
