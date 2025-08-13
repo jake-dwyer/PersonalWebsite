@@ -23,3 +23,15 @@
     font-style: normal;
     font-weight: 400;
   }
+
+    .subText {
+    font-family: IbmPlexMono;
+    color: var(--secondaryText);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+    .subText:hover {
+      text-decoration: underline;
+    }

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import Nav from './components/Nav/Nav';
 import Content from './components/Content/Content';
 import Projects from './components/Projects/Projects';
+import Footer from './components/Footer/Footer'
 import Resume from './components/Nav/Resume';
 import reportWebVitals from './reportWebVitals';
 import { Analytics } from "@vercel/analytics/react"
@@ -15,6 +16,7 @@ root.render(
     <Nav />
     <Content />
     <Projects />
+    <Footer />
     <Analytics />
     <SpeedInsights />
   </React.StrictMode>

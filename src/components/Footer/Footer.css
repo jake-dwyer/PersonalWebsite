@@ -1,0 +1,13 @@
+.footerContent {
+  margin: auto;
+  margin-top: 80px;
+  margin-bottom: 20px;
+  width: 480px;
+  display: block;
+}
+
+.footerBlock {
+  margin-top: 60px;
+  display: block;
+  text-align: center;
+}

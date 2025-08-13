@@ -29,7 +29,9 @@ function Nav() {
       <div className={`navItems ${isMenuOpen ? 'open' : ''}`}>
         <ul>
           <li className='secondaryText'>
-            <a href="Contact" onClick={copyEmail}>CONTACT ME</a>
+            <a href="mailto:dwyer.jak@northeastern.edu" target="_blank">
+              CONTACT ME
+              </a>
           </li>
           <li className='secondaryText'>
             <a href="https://www.linkedin.com/in/jakedwyer-/" target="_blank">LINKEDIN</a>
