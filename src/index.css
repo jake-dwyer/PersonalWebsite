@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'GeistSans';
+    src: url('./assets/fonts/Geist-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'IbmPlexMono';
+    src: url('./assets/fonts/ibmPlexMono.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  :root {
+    --background: #000000;
+    --primaryText: #ededed;
+    --secondaryText: #a1a1a1;
+    --outlineStroke: #404040;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --background: #fafafa;
+      --primaryText: #171717;
+      --secondaryText: #666666;
+      --outlineStroke: rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  html {
+    cursor: url('./assets/figmaCursor.svg'), auto;
+  }
+
+  body {
+    @apply min-h-screen bg-background font-geist text-primary antialiased;
+  }
+
+  ::selection {
+    background: #2937e8;
+    color: #ffffff;
+  }
+}
