@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const navLinks = [
+  { label: 'HEALTH', href: '/oura', internal: true },
   { label: 'CONTACT ME', href: 'mailto:dwyer.jak@northeastern.edu' },
   { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/jakedwyer-/' },
   { label: 'GITHUB', href: 'https://github.com/jake-dwyer' },
@@ -12,6 +14,7 @@ function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <nav className="relative flex w-full flex-wrap items-start justify-between gap-6 px-5 py-5 lg:px-10 2xl:gap-8 2xl:py-8">
@@ -30,9 +33,15 @@ function Nav() {
         <ul className="flex items-center gap-24 2xl:gap-32 max-[1100px]:w-full max-[1100px]:flex-col max-[1100px]:gap-5 max-[1100px]:text-center">
           {navLinks.map((link) => (
             <li key={link.label} className="transition-colors duration-200 hover:text-primary">
-              <a href={link.href} target="_blank" rel="noreferrer">
-                {link.label}
-              </a>
+              {link.internal ? (
+                <Link to={link.href} onClick={closeMenu}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a href={link.href} target="_blank" rel="noreferrer" onClick={closeMenu}>
+                  {link.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>

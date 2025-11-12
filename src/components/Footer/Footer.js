@@ -1,6 +1,3 @@
-import { SpeedInsights } from '@vercel/speed-insights/react';
-import { Analytics } from '@vercel/analytics/react';
-
 function Footer() {
   return (
     <div className="mx-auto mb-5 mt-20 w-full max-w-[520px] px-5 text-center 2xl:max-w-[620px]">
@@ -14,8 +11,6 @@ function Footer() {
           View this site's design in Figma <span className="text-primary">&lt;3</span>
         </a>
       </p>
-      <SpeedInsights />
-      <Analytics />
     </div>
   );
 }

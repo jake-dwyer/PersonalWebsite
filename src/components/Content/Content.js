@@ -1,6 +1,3 @@
-import { SpeedInsights } from '@vercel/speed-insights/react';
-import { Analytics } from '@vercel/analytics/react';
-
 function Content() {
   return (
     <div className="mx-auto my-[60px] flex w-full max-w-[520px] flex-col gap-[60px] px-5 xl:max-w-[580px] 2xl:max-w-[660px] 2xl:gap-20">
@@ -18,8 +15,6 @@ function Content() {
           business.
         </p>
       </div>
-      <SpeedInsights />
-      <Analytics />
     </div>
   );
 }

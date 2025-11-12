@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav/Nav';
-import Content from './components/Content/Content';
-import Projects from './components/Projects/Projects';
 import Footer from './components/Footer/Footer';
+import Home from './pages/Home';
+import Oura from './pages/Oura';
 import reportWebVitals from './reportWebVitals';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -13,12 +14,16 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Nav />
-    <Content />
-    <Projects />
-    <Footer />
-    <Analytics />
-    <SpeedInsights />
+    <Router>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/oura" element={<Oura />} />
+      </Routes>
+      <Footer />
+      <Analytics />
+      <SpeedInsights />
+    </Router>
   </React.StrictMode>
 );
 
