@@ -17,6 +17,16 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.OURA_API_TOKEN || process.env.OURA_TOKEN;
+  const requiredPass = process.env.OURA_DASHBOARD_PASSWORD;
+  const providedPass = req.headers['x-oura-pass'];
+
+  if (requiredPass && requiredPass !== providedPass) {
+    res.status(401).json({
+      error: 'Unauthorized',
+      code: 'unauthorized',
+    });
+    return;
+  }
 
   if (!token) {
     res.status(500).json({

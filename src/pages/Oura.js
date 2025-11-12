@@ -3,23 +3,36 @@ import OuraSummaryCards from '../components/Oura/OuraSummaryCards';
 import TrendChart from '../components/Oura/TrendChart';
 import DataTable from '../components/Oura/DataTable';
 import RangeSelector from '../components/Oura/RangeSelector';
+import InsightCard from '../components/Oura/InsightCard';
+import MiniTrend from '../components/Oura/MiniTrend';
 
 const RESOURCES = ['daily_readiness', 'daily_sleep', 'daily_activity', 'sleep'];
+
+const createEmptyData = () => ({
+  readiness: [],
+  sleep: [],
+  activity: [],
+  sleepSessions: [],
+});
 
 const formatDate = (date) => date.toISOString().split('T')[0];
 
 function Oura() {
   const [dayWindow, setDayWindow] = useState(7);
-  const [rawData, setRawData] = useState({
-    readiness: [],
-    sleep: [],
-    activity: [],
-    sleepSessions: [],
-  });
+  const [rawData, setRawData] = useState(createEmptyData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [errorCode, setErrorCode] = useState('');
   const [requestId, setRequestId] = useState(0);
+  const [accessKey, setAccessKey] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [unlockError, setUnlockError] = useState('');
+  const [unlocking, setUnlocking] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [publicSummary, setPublicSummary] = useState(null);
+  const [publicTrend, setPublicTrend] = useState([]);
+  const [publicLoading, setPublicLoading] = useState(true);
+  const [publicError, setPublicError] = useState('');
 
   const dateRange = useMemo(() => {
     const end = new Date();
@@ -32,6 +45,10 @@ function Oura() {
   }, [dayWindow]);
 
   useEffect(() => {
+    if (!accessKey) {
+      return;
+    }
+
     let isMounted = true;
     const controller = new AbortController();
 
@@ -51,6 +68,7 @@ function Oura() {
           signal: controller.signal,
           headers: {
             'Content-Type': 'application/json',
+            'x-oura-pass': accessKey,
           },
         });
 
@@ -60,6 +78,17 @@ function Oura() {
           payload = await response.json();
         } catch (parseError) {
           payload = null;
+        }
+
+        if (response.status === 401) {
+          if (isMounted) {
+            setUnlockError('Incorrect passphrase. Try again.');
+            setHasAccess(false);
+            setAccessKey('');
+            setPasswordInput('');
+            setRawData(createEmptyData());
+          }
+          return;
         }
 
         if (!response.ok) {
@@ -82,17 +111,21 @@ function Oura() {
             activity,
             sleepSessions,
           });
+          setHasAccess(true);
+          setUnlockError('');
         }
       } catch (fetchError) {
         if (fetchError.name === 'AbortError') return;
         if (isMounted) {
-          setRawData({ readiness: [], sleep: [], activity: [], sleepSessions: [] });
+          setRawData(createEmptyData());
           setError(fetchError.message || 'Something went wrong while talking to Oura.');
           setErrorCode(fetchError.code || 'unknown');
+          setHasAccess(false);
         }
       } finally {
         if (isMounted) {
           setLoading(false);
+          setUnlocking(false);
         }
       }
     }
@@ -103,7 +136,53 @@ function Oura() {
       isMounted = false;
       controller.abort();
     };
-  }, [dateRange.end, dateRange.start, requestId]);
+  }, [accessKey, dateRange.end, dateRange.start, requestId]);
+
+  useEffect(() => {
+    let isMounted = true;
+    setPublicLoading(true);
+    setPublicError('');
+
+    fetch('/api/oura-summary?days=30')
+      .then(async (response) => {
+        const payload = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          const message = payload?.error || `Summary fetch failed (${response.status})`;
+          throw new Error(message);
+        }
+
+        if (isMounted) {
+          setPublicSummary(payload.summary || null);
+          setPublicTrend(payload.trend || []);
+          setPublicLoading(false);
+        }
+      })
+      .catch((summaryError) => {
+        if (isMounted) {
+          setPublicSummary(null);
+          setPublicTrend([]);
+          setPublicError(summaryError.message || 'Unable to load public summary.');
+          setPublicLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleUnlock = (event) => {
+    event.preventDefault();
+    if (!passwordInput.trim()) {
+      setUnlockError('Enter the passphrase to continue.');
+      return;
+    }
+
+    setUnlockError('');
+    setAccessKey(passwordInput.trim());
+    setUnlocking(true);
+  };
 
   const missingToken = errorCode === 'missing_token';
 
@@ -201,6 +280,50 @@ function Oura() {
     return rows;
   }, [rawData.activity, rawData.readiness, rawData.sleep, rawData.sleepSessions]);
 
+  const formatDelta = (value, suffix) => {
+    if (value === null || value === undefined) return 'No change';
+    if (value === 0) return 'Flat week-over-week';
+    const sign = value > 0 ? '+' : '';
+    return `${sign}${value.toFixed(1)}${suffix}`;
+  };
+
+  const hasReadinessAvg =
+    publicSummary && publicSummary.readinessAvg !== null && publicSummary.readinessAvg !== undefined;
+  const hasReadinessChange =
+    publicSummary &&
+    publicSummary.readinessChange !== null &&
+    publicSummary.readinessChange !== undefined;
+  const hasSleepAvg =
+    publicSummary && publicSummary.sleepAvg !== null && publicSummary.sleepAvg !== undefined;
+  const hasSleepChange =
+    publicSummary && publicSummary.sleepChange !== null && publicSummary.sleepChange !== undefined;
+
+  const readinessMetric = hasReadinessAvg
+    ? `${publicSummary.readinessAvg.toFixed(1)}/100`
+    : publicLoading
+      ? '…'
+      : '—';
+  const readinessDelta = hasReadinessChange
+    ? formatDelta(publicSummary.readinessChange, ' pts vs last week')
+    : publicLoading
+      ? 'Calculating…'
+      : 'No trend yet';
+
+  const sleepMetric = hasSleepAvg
+    ? `${publicSummary.sleepAvg.toFixed(1)}h`
+    : publicLoading
+      ? '…'
+      : '—';
+  const sleepDelta = hasSleepChange
+    ? formatDelta(publicSummary.sleepChange, 'h vs last week')
+    : publicLoading
+      ? 'Crunching logs…'
+      : 'No change yet';
+
+  const qualitativeNote =
+    publicSummary?.qualitativeNote ||
+    (publicLoading ? 'Synthesizing insights…' : 'Keeping an eye on recovery + sleep trends.');
+
   return (
     <section className="mx-auto w-full max-w-[1200px] px-5 py-16 text-primary">
       <header className="mb-10 space-y-4">
@@ -215,16 +338,45 @@ function Oura() {
               and figure out how each habit day impacts the next.
             </p>
           </div>
-          <RangeSelector
-            value={dayWindow}
-            onChange={setDayWindow}
-            onRefresh={() => setRequestId((id) => id + 1)}
-            loading={loading}
-          />
+          {hasAccess ? (
+            <RangeSelector
+              value={dayWindow}
+              onChange={setDayWindow}
+              onRefresh={() => setRequestId((id) => id + 1)}
+              loading={loading}
+            />
+          ) : (
+            <form
+              onSubmit={handleUnlock}
+              className="flex flex-col gap-3 rounded-2xl border border-outline p-4 lg:min-w-[320px]"
+            >
+              <label className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">
+                Private preview
+              </label>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(event) => setPasswordInput(event.target.value)}
+                className="rounded-xl border border-outline bg-transparent px-4 py-2 font-geist text-sm text-primary outline-none focus:border-primary"
+                placeholder="Enter passphrase"
+              />
+              {unlockError && <p className="text-xs text-red-400">{unlockError}</p>}
+              <button
+                type="submit"
+                className="rounded-xl border border-outline px-4 py-2 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
+                disabled={unlocking}
+              >
+                {unlocking ? 'Unlocking…' : 'Unlock dashboard'}
+              </button>
+              <p className="font-plex text-xs text-secondary">
+                Invite-only view. Reach out if you want to geek out over the raw data.
+              </p>
+            </form>
+          )}
         </div>
       </header>
 
-      {missingToken && (
+      {missingToken && hasAccess && (
         <div className="mb-6 rounded-xl border border-outline bg-background/40 p-4 text-sm text-secondary">
           <p>
             Missing token. Add <code className="mx-1 bg-outline/30 px-1">OURA_API_TOKEN</code> to your
@@ -234,15 +386,74 @@ function Oura() {
         </div>
       )}
 
-      {error && !missingToken && (
+      {error && !missingToken && hasAccess && (
         <div className="mb-6 rounded-xl border border-outline bg-background/40 p-4 text-sm text-secondary">
           {error}
         </div>
       )}
 
-      <OuraSummaryCards rows={mergedRows} loading={loading} />
-      <TrendChart rows={mergedRows} loading={loading} />
-      <DataTable rows={mergedRows} loading={loading} />
+      <section className="mb-10 space-y-6 rounded-2xl border border-outline bg-background/30 p-6">
+        <div className="grid gap-4 md:grid-cols-2">
+          <InsightCard
+            title="Readiness balance"
+            metric={readinessMetric}
+            delta={readinessDelta}
+            helper="Weekly average readiness score"
+          />
+          <InsightCard
+            title="Sleep consistency"
+            metric={sleepMetric}
+            delta={sleepDelta}
+            helper="Average hours slept per night"
+          />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-outline p-4">
+            <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Readiness trend</p>
+            {publicTrend.length ? (
+              <MiniTrend rows={publicTrend} metricKey="readiness" color="#EDEDED" label="Readiness" />
+            ) : (
+              <p className="mt-4 font-plex text-xs text-secondary">
+                {publicLoading ? 'Plotting latest data…' : publicError || 'No trend available yet.'}
+              </p>
+            )}
+          </div>
+          <div className="rounded-2xl border border-outline p-4">
+            <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Sleep trend</p>
+            {publicTrend.length ? (
+              <MiniTrend rows={publicTrend} metricKey="sleepHours" color="#A1A1A1" label="Sleep (h)" />
+            ) : (
+              <p className="mt-4 font-plex text-xs text-secondary">
+                {publicLoading ? 'Crunching nightly logs…' : publicError || 'No trend available yet.'}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-outline p-4">
+          <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Weekly takeaway</p>
+          <p className="mt-3 font-geist text-base leading-6 text-primary">{qualitativeNote}</p>
+          {publicError && (
+            <p className="mt-2 font-plex text-xs text-red-400">{publicError}. Showing cached insight.</p>
+          )}
+        </div>
+      </section>
+
+      {hasAccess ? (
+        <>
+          <OuraSummaryCards rows={mergedRows} loading={loading} />
+          <TrendChart rows={mergedRows} loading={loading} />
+          <DataTable rows={mergedRows} loading={loading} />
+        </>
+      ) : (
+        <section className="rounded-2xl border border-outline bg-background/30 p-6 text-secondary">
+          <p className="font-plex text-xs uppercase tracking-[0.2em]">Preview Mode</p>
+          <h2 className="mt-2 font-geist text-2xl text-primary">Detailed trends stay hidden</h2>
+          <p className="mt-3 font-geist text-base leading-6 text-secondary">
+            This experiment ingests my private Oura metrics. I keep the nitty-gritty behind a passphrase so interviews
+            and casual visitors only see the concept, not daily biometrics. Ask and I can share the live view.
+          </p>
+        </section>
+      )}
     </section>
   );
 }
