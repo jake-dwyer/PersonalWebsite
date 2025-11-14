@@ -29,6 +29,7 @@ function Oura() {
   const [unlockError, setUnlockError] = useState('');
   const [unlocking, setUnlocking] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
+  const [showUnlockForm, setShowUnlockForm] = useState(false);
   const [publicSummary, setPublicSummary] = useState(null);
   const [publicTrend, setPublicTrend] = useState([]);
   const [publicLoading, setPublicLoading] = useState(true);
@@ -113,6 +114,7 @@ function Oura() {
           });
           setHasAccess(true);
           setUnlockError('');
+          setShowUnlockForm(false);
         }
       } catch (fetchError) {
         if (fetchError.name === 'AbortError') return;
@@ -325,11 +327,59 @@ function Oura() {
     (publicLoading ? 'Synthesizing insights…' : 'Keeping an eye on recovery + sleep trends.');
 
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-5 py-16 text-primary">
+    <>
+      {showUnlockForm && !hasAccess && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Unlock private dashboard"
+          onClick={() => setShowUnlockForm(false)}
+        >
+          <div
+            className="w-full max-w-md border border-outline bg-background p-6 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Private preview</p>
+              <button
+                type="button"
+                onClick={() => setShowUnlockForm(false)}
+                className="text-secondary transition-colors hover:text-primary"
+                aria-label="Close unlock form"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="mt-2 text-sm text-secondary">
+              Enter the passphrase to load the full readiness + sleep dashboard.
+            </p>
+            <form onSubmit={handleUnlock} className="mt-4 space-y-3">
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(event) => setPasswordInput(event.target.value)}
+                className="w-full border border-outline bg-transparent px-4 py-2 font-geist text-sm text-primary outline-none focus:border-primary"
+                placeholder="Passphrase"
+                autoFocus
+              />
+              {unlockError && <p className="text-xs text-red-400">{unlockError}</p>}
+              <button
+                type="submit"
+                className="w-full border border-outline px-4 py-2 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
+                disabled={unlocking}
+              >
+                {unlocking ? 'Unlocking…' : 'Enter dashboard'}
+              </button>
+              <p className="font-plex text-xs text-secondary">
+                Invite-only data. Ping me if you want temporary access.
+              </p>
+            </form>
+          </div>
+        </div>
+      )}
+      <section className="mx-auto w-full max-w-[1200px] px-5 py-16 text-primary">
       <header className="mb-10 space-y-4">
-        <p className="font-plex text-sm text-secondary uppercase tracking-[0.2em]">
-          OURA HEALTH EXPERIMENT
-        </p>
         <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl space-y-2">
             <h1 className="font-geist text-3xl text-primary 2xl:text-4xl">Wellness control center</h1>
@@ -346,38 +396,27 @@ function Oura() {
               loading={loading}
             />
           ) : (
-            <form
-              onSubmit={handleUnlock}
-              className="flex flex-col gap-3 rounded-2xl border border-outline p-4 lg:min-w-[320px]"
-            >
-              <label className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">
-                Private preview
-              </label>
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(event) => setPasswordInput(event.target.value)}
-                className="rounded-xl border border-outline bg-transparent px-4 py-2 font-geist text-sm text-primary outline-none focus:border-primary"
-                placeholder="Enter passphrase"
-              />
-              {unlockError && <p className="text-xs text-red-400">{unlockError}</p>}
+            <div className="flex flex-col items-end gap-2 text-right">
               <button
-                type="submit"
-                className="rounded-xl border border-outline px-4 py-2 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
-                disabled={unlocking}
+                type="button"
+                onClick={() => setShowUnlockForm(true)}
+                className="flex items-center gap-2 border border-outline px-4 py-2 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
               >
-                {unlocking ? 'Unlocking…' : 'Unlock dashboard'}
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path
+                    d="M8 2.5a2.5 2.5 0 0 1 2.5 2.5v1.5H5.5V5A2.5 2.5 0 0 1 8 2.5ZM4 6.5V5a4 4 0 0 1 8 0v1.5h.5A1.5 1.5 0 0 1 14 8v4.5A1.5 1.5 0 0 1 12.5 14h-9A1.5 1.5 0 0 1 2 12.5V8A1.5 1.5 0 0 1 3.5 6.5H4Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span className="font-plex text-xs uppercase tracking-[0.2em]">Unlock private view</span>
               </button>
-              <p className="font-plex text-xs text-secondary">
-                Invite-only view. Reach out if you want to geek out over the raw data.
-              </p>
-            </form>
+            </div>
           )}
         </div>
       </header>
 
       {missingToken && hasAccess && (
-        <div className="mb-6 rounded-xl border border-outline bg-background/40 p-4 text-sm text-secondary">
+        <div className="mb-6 border border-outline bg-background/40 p-4 text-sm text-secondary">
           <p>
             Missing token. Add <code className="mx-1 bg-outline/30 px-1">OURA_API_TOKEN</code> to your
             <code className="mx-1 bg-outline/30 px-1">.env.local</code> (and hosting provider) so the proxy can call
@@ -387,12 +426,12 @@ function Oura() {
       )}
 
       {error && !missingToken && hasAccess && (
-        <div className="mb-6 rounded-xl border border-outline bg-background/40 p-4 text-sm text-secondary">
+        <div className="mb-6 border border-outline bg-background/40 p-4 text-sm text-secondary">
           {error}
         </div>
       )}
 
-      <section className="mb-10 space-y-6 rounded-2xl border border-outline bg-background/30 p-6">
+      <section className="mb-10 space-y-6 border border-outline bg-background/30 p-6">
         <div className="grid gap-4 md:grid-cols-2">
           <InsightCard
             title="Readiness balance"
@@ -408,20 +447,20 @@ function Oura() {
           />
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-outline p-4">
+          <div className="border border-outline p-4">
             <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Readiness trend</p>
             {publicTrend.length ? (
-              <MiniTrend rows={publicTrend} metricKey="readiness" color="#EDEDED" label="Readiness" />
+              <MiniTrend rows={publicTrend} metricKey="readiness" color="#28FF8A" label="Readiness" />
             ) : (
               <p className="mt-4 font-plex text-xs text-secondary">
                 {publicLoading ? 'Plotting latest data…' : publicError || 'No trend available yet.'}
               </p>
             )}
           </div>
-          <div className="rounded-2xl border border-outline p-4">
+          <div className="border border-outline p-4">
             <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Sleep trend</p>
             {publicTrend.length ? (
-              <MiniTrend rows={publicTrend} metricKey="sleepHours" color="#A1A1A1" label="Sleep (h)" />
+              <MiniTrend rows={publicTrend} metricKey="sleepHours" color="#2E84FF" label="Sleep (h)" />
             ) : (
               <p className="mt-4 font-plex text-xs text-secondary">
                 {publicLoading ? 'Crunching nightly logs…' : publicError || 'No trend available yet.'}
@@ -429,7 +468,7 @@ function Oura() {
             )}
           </div>
         </div>
-        <div className="rounded-2xl border border-outline p-4">
+        <div className="border border-outline p-4">
           <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Weekly takeaway</p>
           <p className="mt-3 font-geist text-base leading-6 text-primary">{qualitativeNote}</p>
           {publicError && (
@@ -444,17 +483,9 @@ function Oura() {
           <TrendChart rows={mergedRows} loading={loading} />
           <DataTable rows={mergedRows} loading={loading} />
         </>
-      ) : (
-        <section className="rounded-2xl border border-outline bg-background/30 p-6 text-secondary">
-          <p className="font-plex text-xs uppercase tracking-[0.2em]">Preview Mode</p>
-          <h2 className="mt-2 font-geist text-2xl text-primary">Detailed trends stay hidden</h2>
-          <p className="mt-3 font-geist text-base leading-6 text-secondary">
-            This experiment ingests my private Oura metrics. I keep the nitty-gritty behind a passphrase so interviews
-            and casual visitors only see the concept, not daily biometrics. Ask and I can share the live view.
-          </p>
-        </section>
-      )}
+      ) : null}
     </section>
+    </>
   );
 }
 

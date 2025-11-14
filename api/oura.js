@@ -1,6 +1,67 @@
 const BASE_URL = 'https://api.ouraring.com/v2/usercollection';
+const TOKEN_URL = process.env.OURA_TOKEN_URL || 'https://api.ouraring.com/oauth/token';
 
 const VALID_RESOURCES = ['daily_readiness', 'daily_sleep', 'daily_activity'];
+
+let cachedAccessToken = null;
+let cachedExpiry = 0;
+
+async function resolveAccessToken() {
+  const legacyToken = process.env.OURA_API_TOKEN || process.env.OURA_TOKEN;
+  if (legacyToken) {
+    return legacyToken;
+  }
+
+  const clientId = process.env.OURA_CLIENT_ID;
+  const clientSecret = process.env.OURA_CLIENT_SECRET;
+  const refreshToken = process.env.OURA_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) {
+    const configError = new Error(
+      'Missing Oura OAuth credentials. Set OURA_CLIENT_ID, OURA_CLIENT_SECRET, and OURA_REFRESH_TOKEN or provide OURA_API_TOKEN.'
+    );
+    configError.code = 'missing_token';
+    throw configError;
+  }
+
+  if (cachedAccessToken && Date.now() < cachedExpiry - 30000) {
+    return cachedAccessToken;
+  }
+
+  const params = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: clientId,
+    client_secret: clientSecret,
+  });
+
+  const response = await fetch(TOKEN_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params,
+  });
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || !data.access_token) {
+    const error = new Error(data.error_description || data.error || 'Unable to refresh Oura access token.');
+    error.code = 'token_refresh_failed';
+    throw error;
+  }
+
+  cachedAccessToken = data.access_token;
+  const expiresIn = Number(data.expires_in) || 240;
+  cachedExpiry = Date.now() + expiresIn * 1000;
+
+  if (data.refresh_token && data.refresh_token !== refreshToken) {
+    console.warn(
+      'Received new Oura refresh token. Update OURA_REFRESH_TOKEN in your environment to persist it.'
+    );
+  }
+
+  return cachedAccessToken;
+}
 
 function buildSingleRequest(resource, start, end) {
   const url = new URL(`${BASE_URL}/${resource}`);
@@ -16,7 +77,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  const token = process.env.OURA_API_TOKEN || process.env.OURA_TOKEN;
   const requiredPass = process.env.OURA_DASHBOARD_PASSWORD;
   const providedPass = req.headers['x-oura-pass'];
 
@@ -24,14 +84,6 @@ export default async function handler(req, res) {
     res.status(401).json({
       error: 'Unauthorized',
       code: 'unauthorized',
-    });
-    return;
-  }
-
-  if (!token) {
-    res.status(500).json({
-      error: 'Missing Oura API token. Set OURA_API_TOKEN in your environment.',
-      code: 'missing_token',
     });
     return;
   }
@@ -52,6 +104,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    const token = await resolveAccessToken();
     if (resources) {
       const requested = resources
         .split(',')
@@ -131,7 +184,7 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).json({
       error: error.message || 'Failed to reach Oura.',
-      code: 'proxy_failure',
+      code: error.code || 'proxy_failure',
     });
   }
 }

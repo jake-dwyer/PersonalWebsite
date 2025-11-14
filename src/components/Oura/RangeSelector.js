@@ -13,7 +13,7 @@ function RangeSelector({ value, onChange, onRefresh, loading }) {
           key={option.value}
           type="button"
           onClick={() => onChange(option.value)}
-          className={`rounded-full border px-4 py-2 text-sm transition-colors ${
+          className={`border px-4 py-2 text-sm transition-colors ${
             value === option.value
               ? 'border-primary text-primary'
               : 'border-outline text-secondary hover:text-primary'
@@ -26,7 +26,7 @@ function RangeSelector({ value, onChange, onRefresh, loading }) {
       <button
         type="button"
         onClick={onRefresh}
-        className="rounded-full border border-outline px-4 py-2 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
+        className="border border-outline px-4 py-2 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
         disabled={loading}
       >
         {loading ? 'Refreshing…' : 'Refresh data'}

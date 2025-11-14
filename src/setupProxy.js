@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 
 const BASE_URL = 'https://api.ouraring.com/v2/usercollection';
+const TOKEN_URL = process.env.OURA_TOKEN_URL || 'https://api.ouraring.com/oauth/token';
 
 const formatDate = (date) => date.toISOString().split('T')[0];
 
@@ -50,21 +51,73 @@ const pickNumber = (...values) => {
   return null;
 };
 
+let cachedAccessToken = null;
+let cachedExpiry = 0;
+
+async function resolveAccessToken() {
+  const legacyToken = process.env.OURA_API_TOKEN || process.env.OURA_TOKEN;
+  if (legacyToken) {
+    return legacyToken;
+  }
+
+  const clientId = process.env.OURA_CLIENT_ID;
+  const clientSecret = process.env.OURA_CLIENT_SECRET;
+  const refreshToken = process.env.OURA_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) {
+    const error = new Error(
+      'Missing Oura OAuth credentials. Set OURA_CLIENT_ID, OURA_CLIENT_SECRET, and OURA_REFRESH_TOKEN or provide OURA_API_TOKEN.'
+    );
+    error.code = 'missing_token';
+    throw error;
+  }
+
+  if (cachedAccessToken && Date.now() < cachedExpiry - 30000) {
+    return cachedAccessToken;
+  }
+
+  const params = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: clientId,
+    client_secret: clientSecret,
+  });
+
+  const response = await fetch(TOKEN_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params,
+  });
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || !data.access_token) {
+    const tokenError = new Error(data.error_description || data.error || 'Unable to refresh Oura access token.');
+    tokenError.code = 'token_refresh_failed';
+    throw tokenError;
+  }
+
+  cachedAccessToken = data.access_token;
+  const expiresIn = Number(data.expires_in) || 240;
+  cachedExpiry = Date.now() + expiresIn * 1000;
+
+  if (data.refresh_token && data.refresh_token !== refreshToken) {
+    console.warn('Received new Oura refresh token. Update OURA_REFRESH_TOKEN to persist it.');
+  }
+
+  return cachedAccessToken;
+}
+
 module.exports = function setupProxy(app) {
   const secureRouter = express.Router();
 
   secureRouter.use((req, res) => {
-    const token = process.env.OURA_API_TOKEN || process.env.OURA_TOKEN;
     const requiredPass = process.env.OURA_DASHBOARD_PASSWORD;
     const providedPass = req.headers['x-oura-pass'];
 
     if (requiredPass && requiredPass !== providedPass) {
       res.status(401).json({ error: 'Unauthorized', code: 'unauthorized' });
-      return;
-    }
-
-    if (!token) {
-      res.status(500).json({ error: 'Missing OURA_API_TOKEN.', code: 'missing_token' });
       return;
     }
 
@@ -81,6 +134,14 @@ module.exports = function setupProxy(app) {
     const params = new URLSearchParams({ start_date: startDate, end_date: endDate });
 
     (async () => {
+      let token;
+      try {
+        token = await resolveAccessToken();
+      } catch (tokenError) {
+        res.status(500).json({ error: tokenError.message, code: tokenError.code || 'missing_token' });
+        return;
+      }
+
       try {
         if (resources) {
           const requested = resources
@@ -134,13 +195,6 @@ module.exports = function setupProxy(app) {
   const summaryRouter = express.Router();
 
   summaryRouter.use((req, res) => {
-    const token = process.env.OURA_API_TOKEN || process.env.OURA_TOKEN;
-
-    if (!token) {
-      res.status(500).json({ error: 'Missing OURA_API_TOKEN.', code: 'missing_token' });
-      return;
-    }
-
     const days = Math.max(7, Math.min(60, Number(req.query.days) || 30));
     const endDate = new Date();
     const startDate = new Date();
@@ -149,6 +203,14 @@ module.exports = function setupProxy(app) {
     const end = formatDate(endDate);
 
     (async () => {
+      let token;
+      try {
+        token = await resolveAccessToken();
+      } catch (tokenError) {
+        res.status(500).json({ error: tokenError.message, code: tokenError.code || 'missing_token' });
+        return;
+      }
+
       try {
         const params = new URLSearchParams({ start_date: start, end_date: end });
         const readinessResponse = await performFetch(buildUrl('daily_readiness', params), token);

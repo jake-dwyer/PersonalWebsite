@@ -23,7 +23,7 @@ const headers = [
 
 function DataTable({ rows = [], loading }) {
   return (
-    <section className="mt-10 rounded-2xl border border-outline">
+    <section className="mt-10 border border-outline">
       <div className="border-b border-outline px-5 py-4">
         <p className="font-plex text-xs uppercase tracking-[0.2em] text-secondary">Daily breakdown</p>
         <p className="font-geist text-base text-primary">
