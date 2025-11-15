@@ -273,6 +273,7 @@ function Oura() {
           hrvBalance: readiness.contributors?.heart_rate_variability_balance ?? null,
           totalSleep: totalSleepSeconds,
           sleepEfficiency,
+          sleepScore: sleep.score ?? sleep.sleep_score ?? null,
           totalSteps: activity.steps ?? null,
           calories: activity.active_calories ?? activity.calories ?? null,
           activityScore: activity.score ?? null,
