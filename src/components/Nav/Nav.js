@@ -31,9 +31,9 @@ function Nav() {
           <li className='secondaryText'>
             <a href="https://github.com/jake-dwyer" target="_blank" rel="noreferrer">GITHUB</a>
           </li>
-          <li className='secondaryText'>
+          {/* <li className='secondaryText'>
             <a href="https://leetcode.com/u/jakeistyping/" target="_blank" rel="noreferrer">LEETCODE</a>
-          </li>
+          </li> */}
           <li className='secondaryText'>
             <a href="../images/Resume.pdf" target="_blank" rel="noreferrer">RESUME</a>
           </li>
