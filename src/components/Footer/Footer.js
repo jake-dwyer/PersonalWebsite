@@ -10,7 +10,7 @@ function Footer() {
         <div className='footerContent'>
             <div className='footerBlock'>
                 <p className='subText'>
-                    <a href='https://www.figma.com/community/file/1537502776991564304/personal-website' target='_blank'>
+                    <a href='https://www.figma.com/community/file/1537502776991564304/personal-website' target='_blank' rel='noreferrer'>
                     View this site's design in Figma <span>&lt;3</span>
                     </a>
                 </p>

@@ -19,7 +19,7 @@ function Cards() {
                         <h2>
                             Curate [In Development]
                         </h2>
-                        <a href="https://github.com/jake-dwyer/curate" target="_blank">
+                        <a href="https://github.com/jake-dwyer/curate" target="_blank" rel="noreferrer">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                             <g id="arrow.up.forward">
@@ -38,7 +38,7 @@ function Cards() {
                         <h2>
                             Tasks
                         </h2>
-                        <a href="https://tasks.jakedwyer.dev/" target="_blank">
+                        <a href="https://tasks.jakedwyer.dev/" target="_blank" rel="noreferrer">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                             <g id="arrow.up.forward">
@@ -57,7 +57,7 @@ function Cards() {
                         <h2>
                             Solana Payments
                         </h2>
-                        <a href="https://github.com/jake-dwyer/solanaCLIPayments" target="_blank">
+                        <a href="https://github.com/jake-dwyer/solanaCLIPayments" target="_blank" rel="noreferrer">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                             <g id="arrow.up.forward">
@@ -76,7 +76,7 @@ function Cards() {
                         <h2>
                             Hexagonal Reversi
                         </h2>
-                        <a href="https://github.com/jake-dwyer/publicReversi" target="_blank">
+                        <a href="https://github.com/jake-dwyer/publicReversi" target="_blank" rel="noreferrer">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                             <g id="arrow.up.forward">
