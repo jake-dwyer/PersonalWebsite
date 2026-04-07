@@ -18,9 +18,9 @@ function Cards() {
                 <img src={Curate} alt="Curate"/>
                     <div className='cardContent'>
                         <h2>
-                            Curate	
+                            Curate
                             <a href="https://github.com/jake-dwyer/curate" target="_blank" rel="noreferrer">
-                            [In Development]
+                             [In Development]
                             </a>
                         </h2>
                         <a href="https://curatemusic.app" target="_blank" rel="noreferrer">
