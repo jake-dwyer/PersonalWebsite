@@ -18,9 +18,12 @@ function Cards() {
                 <img src={Curate} alt="Curate"/>
                     <div className='cardContent'>
                         <h2>
-                            Curate [In Development]
+                            Curate	
+                            <a href="https://github.com/jake-dwyer/curate" target="_blank" rel="noreferrer">
+                            [In Development]
+                            </a>
                         </h2>
-                        <a href="https://github.com/jake-dwyer/curate" target="_blank" rel="noreferrer">
+                        <a href="https://curatemusic.app" target="_blank" rel="noreferrer">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Arrows">
                             <g id="arrow.up.forward">
