@@ -12,7 +12,7 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-                    I'm a fourth-year student at Northeastern University studying Computer Science and Business Administration.
+	    	I recently graduated from Northeastern University and will be joining SecureFrame as a Software Engineer on the Growth team!
                 </p>
             </div>
             <div className='contentBlock'>
