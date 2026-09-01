@@ -42,7 +42,7 @@ function Nav() {
       <div className='topRightNav'>
         <ul>
           <li className='secondaryText'>LOCATION</li>
-          <li className='primaryText'>New York, NY [soon!]</li>
+          <li className='primaryText'>NYC]</li>
         </ul>
       </div>
       <div className='hamburger' onClick={toggleMenu}>
