@@ -12,7 +12,10 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-	    	I recently graduated from Northeastern University and will be joining Secureframe as a Software Engineer on the Growth team!
+                    I work on the Growth team at Secureframe, where I build the surfaces that bring people to the product: marketplace pages, SEO and AEO tooling, the analytics pipelines that say whether any of it worked. I like problems that sit between marketing and engineering, and I think most of them are engineering problems nobody framed that way.
+                </p>
+                <p className='primaryText'>
+                    Northeastern alum.
                 </p>
             </div>
             <div className='contentBlock'>
