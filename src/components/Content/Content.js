@@ -12,7 +12,7 @@ function Content() {
                     CURRENTLY
                 </h1>
                 <p className='primaryText'>
-                    I work on the Growth team at Secureframe, building the surfaces that bring people to the product and the analytics behind both.
+                    I work on the Growth team at Secureframe, building the surfaces that bring people to the product.
                 </p>
                 <p className='primaryText'>
                     Northeastern alum.
